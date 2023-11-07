@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -72,45 +75,67 @@ fun MyResponsiveUI() {
             .padding(16.dp)
     }
 
-    Column(
-        modifier = columnModifier,
-        horizontalAlignment = if (screenWidth < 600.dp) Alignment.CenterHorizontally else Alignment.Start
-    ) {
-        TextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Escribe algo") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {},
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+    BoxWithConstraints {
+        Column(
+            modifier = columnModifier,
+            horizontalAlignment = if (screenWidth < 600.dp) Alignment.CenterHorizontally else Alignment.Start
         ) {
-            Text("Botón")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Image(
-            painter = painterResource(id = R.drawable.example_image),
-            contentDescription = "Imagen de ejemplo",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.size(80.dp).align(Alignment.CenterHorizontally)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            LazyColumn {
-                items(20) { index ->
-                    ListItemView("Item $index")
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextField(
+                        value = "",
+                        onValueChange = {},
+                        label = { Text("Escribe algo") },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = { /* TODO */ },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Botón")
+                    }
+                }
+            } else {
+                TextField(
+                    value = "",
+                    onValueChange = {},
+                    label = { Text("Escribe algo") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { /* TODO */ }) {
+                    Text("Botón")
                 }
             }
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(8.dp),
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                items(20) { index ->
-                    ListItemView("Grid Item $index")
+            Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = painterResource(id = R.drawable.example_image),
+                contentDescription = "Imagen de ejemplo",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(80.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                LazyColumn {
+                    items(20) { index ->
+                        ListItemView("Item $index")
+                    }
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    contentPadding = PaddingValues(8.dp),
+                    modifier = Modifier.fillMaxHeight()
+                ) {
+                    items(20) { index ->
+                        ListItemView("Grid Item $index")
+                    }
                 }
             }
         }
